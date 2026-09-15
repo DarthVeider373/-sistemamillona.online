@@ -1,1083 +1,1176 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
   <!--
-    ================================================================
-    OS 2 BLOCOS DE SCRIPT DE RASTREIO ORIGINAIS FORAM REMOVIDOS DAQUI:
-
-    1) Pixel da UTMify (window.pixelId + carregamento de
-       https://cdn.utmify.com.br/scripts/pixel/pixel.js) — rastreava
+    RASTREIO REMOVIDO DAQUI:
+    1) Pixel da UTMify (window.pixelId + pixel.js) — rastreava
        conversões/eventos do pixel de anúncios.
-
-    2) Um segundo script, OFUSCADO (base64 + XOR) para dificultar a
-       leitura, que eu decodifiquei manualmente. Ele carregava:
-       https://cdn.utmify.com.br/scripts/utms/latest.js
-       Esse é o script de captura de UTMs da UTMify (rastreia de qual
-       anúncio/campanha o visitante veio). Por estar ofuscado de
-       propósito, é ainda mais claramente um script de rastreio.
-
-    Se você quiser usar a UTMify de novo depois (ex: para rastrear
-    suas próprias campanhas), me avise que eu recoloco de forma
-    limpa (sem ofuscação) e com seu próprio pixelId.
-    ================================================================
+    2) <script src="https://cdn.utmify.com.br/scripts/utms/latest.js">
+       — captura de UTM/campanha da UTMify (desta vez não estava
+       ofuscado, era um <script src> direto).
+    Mesmos rastreadores encontrados na página principal.
   -->
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ASSISTA AGORA!</title>
-
+  <title>Espera. Antes de Irte, Lee Esto</title>
 
   <style>
     @keyframes pulsar {
-      0% {
-        transform: scale(1);
-      }
-
-      50% {
-        transform: scale(1.05);
-      }
-
-      100% {
-        transform: scale(1);
-      }
+      0%   { transform: scale(1); }
+      50%  { transform: scale(1.04); }
+      100% { transform: scale(1); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     * {
-      font-family: "Roboto", sans-serif;
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
       font-family: Arial, Helvetica, sans-serif;
     }
 
-    .hero {
-      height: 40px;
+    body { background: #000; color: #fff; }
+
+    .top-bar {
+      position: fixed;
+      top: 0;
       width: 100%;
-      background: #DAA520;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: bold;
-      font-size: 17px;
+      background: #b71c1c;
       color: #fff;
-      position: absolute;
+      text-align: center;
+      padding: 11px 10px;
+      font-size: 14px;
+      font-weight: bold;
+      z-index: 9999;
+      letter-spacing: 0.5px;
     }
 
-    .container {
-      background: #000;
-      width: 100%;
-      height: auto;
-      min-height: calc(100vh - 70px);
-      display: flex;
-      justify-content: center;
+    .wrapper {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 70px 18px 60px;
     }
 
-    .content {
-      width: 100%;
-      max-width: 800px;
+    .open-line {
+      background: #111;
+      border-left: 4px solid #ff7a00;
+      padding: 18px 20px;
+      border-radius: 0 8px 8px 0;
+      margin-bottom: 36px;
+      font-size: 17px;
+      color: #ddd;
+      line-height: 1.7;
+      animation: fadeInUp 0.6s ease both;
+    }
+
+    .open-line strong { color: #ff7a00; }
+
+    h1.headline {
+      font-size: 32px;
+      line-height: 1.25;
+      text-align: center;
+      margin-bottom: 12px;
+      color: #fff;
+    }
+
+    h1.headline span { color: #ff7a00; }
+
+    .sub {
+      text-align: center;
+      color: #aaa;
+      font-size: 17px;
+      line-height: 1.6;
+      margin-bottom: 36px;
+    }
+
+    h2.section-title {
+      font-size: 24px;
+      color: #fff;
+      margin: 40px 0 16px;
+      line-height: 1.3;
+    }
+
+    h2.section-title span { color: #ff7a00; }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #222;
+      margin: 44px 0;
+    }
+
+    .body-text {
+      color: #ccc;
+      font-size: 16px;
+      line-height: 1.8;
+      margin-bottom: 18px;
+    }
+
+    .body-text strong { color: #fff; }
+    .body-text em     { color: #ff7a00; font-style: normal; font-weight: bold; }
+
+    .pull-quote {
+      background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+      border: 1px solid #333;
+      border-left: 5px solid #ff7a00;
+      border-radius: 0 10px 10px 0;
+      padding: 20px 22px;
+      margin: 28px 0;
+      font-size: 18px;
+      color: #fff;
+      line-height: 1.6;
+      font-style: italic;
+    }
+
+    .pull-quote cite {
+      display: block;
+      margin-top: 10px;
+      font-style: normal;
+      font-size: 14px;
+      color: #ff7a00;
+      font-weight: bold;
+    }
+
+    .testimonial-text {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .testimonial-text .result {
+      font-size: 28px;
+      font-weight: bold;
+      color: #4fce5c;
+      margin-bottom: 6px;
+    }
+
+    .testimonial-text p {
+      color: #ccc;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .testimonial-text .author {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #888;
+    }
+
+    .dep-grid {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 90px 10px 0px 10px;
-      box-sizing: border-box;
+      gap: 16px;
+      margin: 24px 0;
     }
 
-    /* MODO REVISÃO: forcei só o .esconder (1º pitch/oferta, que
-       originalmente aparecia depois de 1284s de vídeo) a ficar
-       visível. O .esconder2 (modal de desconto p/ US$17, que aparecia
-       depois de 1756s) continua escondido normalmente — display:none
-       mais abaixo. Antes de publicar de verdade, reverta esta regra
-       para "display: none" também no .esconder. */
-    .esconder {
+    .dep-card {
+      background: linear-gradient(145deg, #ff7a00, #ff3c00);
+      padding: 3px;
+      border-radius: 14px;
+    }
+
+    .dep-card-inner {
+      background: #111;
+      border-radius: 12px;
+      padding: 8px;
+    }
+
+    .dep-card-inner img {
+      width: 100%;
+      border-radius: 9px;
       display: block;
     }
-    .esconder2 {
-      display: none;
+
+    .nope-list {
+      list-style: none;
+      margin: 16px 0 24px;
     }
 
-    .modal-descuento {
-      position: fixed;
-      inset: 0;
-      z-index: 999999999;
-      display: none;
-      justify-content: center;
+    .nope-list li {
+      color: #ccc;
+      font-size: 16px;
+      padding: 9px 0;
+      border-bottom: 1px solid #1a1a1a;
+      display: flex;
       align-items: center;
-      padding: 20px;
-      box-sizing: border-box;
-      background: rgba(0, 0, 0, 0.85);
+      gap: 10px;
     }
 
-    .modal-descuento-content {
-      width: 100%;
-      max-width: 520px;
-      background: linear-gradient(180deg, #2a1500 0%, #000000 100%);
-      border: 3px solid #ff7a00;
-      border-radius: 18px;
-      padding: 30px 25px;
-      box-sizing: border-box;
-      text-align: center;
-      box-shadow: 0 0 30px rgba(255, 122, 0, 0.35);
-    }
-
-    .modal-badge {
-      display: inline-block;
-      background: #ff7a00;
-      color: #000 !important;
-      padding: 8px 18px;
-      border-radius: 999px;
+    .nope-list li::before {
+      content: "✗";
+      color: #e53935;
       font-weight: bold;
-      font-size: 15px;
-      margin-bottom: 20px;
-    }
-
-    .modal-descuento-content h2 {
-      color: #ffffff !important;
-      font-size: 42px;
-      line-height: 1.15;
-      margin-bottom: 20px;
-    }
-
-    .modal-texto {
-      color: #e8e8e8 !important;
-      font-size: 24px;
-      line-height: 1.4;
-    }
-
-    .precio-antiguo {
-      margin-top: 25px;
-      color: #ffffff !important;
-      font-size: 22px;
-    }
-
-    .precio-antiguo span {
-      color: #ff4d4d !important;
-      text-decoration: line-through;
-    }
-
-    .precio-nuevo {
-      margin-top: 15px;
-      color: #ff7a00 !important;
-      font-size: 60px;
-      font-weight: 900;
-      text-shadow: 0 0 18px rgba(255, 122, 0, .6);
-    }
-
-    .modal-aviso {
-      margin-top: 20px;
-      color: #ffd54a !important;
       font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .yes-list {
+      list-style: none;
+      margin: 16px 0 24px;
+    }
+
+    .yes-list li {
+      color: #ccc;
+      font-size: 16px;
+      padding: 9px 0;
+      border-bottom: 1px solid #1a1a1a;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
       line-height: 1.5;
     }
 
-    .boton-descuento {
-      display: block;
-      width: 100%;
-      margin-top: 30px;
-      padding: 18px;
-      box-sizing: border-box;
-      background: linear-gradient(180deg, #ff7a00, #ff3c00);
-      color: #ffffff !important;
-      text-decoration: none;
+    .yes-list li::before {
+      content: "✓";
+      color: #4fce5c;
       font-weight: bold;
-      font-size: 28px;
-      border-radius: 10px;
-    }
-
-    @media (max-width: 768px) {
-      .modal-descuento-content {
-        max-width: 95%;
-        padding: 22px 18px;
-      }
-
-      .modal-descuento-content h2 {
-        font-size: 30px;
-      }
-
-      .modal-texto {
-        font-size: 19px;
-      }
-
-      .precio-antiguo {
-        font-size: 20px;
-      }
-
-      .precio-nuevo {
-        font-size: 48px;
-      }
-
-      .modal-aviso {
-        font-size: 16px;
-      }
-
-      .boton-descuento {
-        font-size: 22px;
-        padding: 16px;
-      }
-    }
-
-    span {
-      font-size: 16px;
-      color: #fff;
-      margin-top: 10px;
-    }
-
-    .button {
-      width: 400px;
-      max-width: 90%;
-      height: 60px;
-      border-radius: 8px;
-      background-color: transparent;
-      background-image: linear-gradient(150deg, #4fce5c 0%, #198835 100%);
-      padding: 10px;
-      font-weight: bold;
-      font-size: 20px;
-      color: #fff;
-      justify-content: center;
-      align-items: center;
-      /* animation: pulsar 2s infinite ease-in-out; */
-      margin-top: 50px;
-      cursor: pointer;
-      border: none;
-      outline: none;
-    }
-
-
-    .title {
-      margin-bottom: 25px;
-      color: #fff;
-      font-size: 25px;
-    }
-
-    .faq-container {
-      width: 100%;
-      margin-top: 250px;
-    }
-
-    .faq-answer {
-      display: none;
-      padding: 15px;
-      box-sizing: border-box;
-      background-color: #fff;
-      text-align: initial;
-    }
-
-    .faq-question {
-      cursor: pointer;
-      padding: 10px;
-      height: 50px;
-      display: flex;
-      border-radius: 4px;
-      align-items: center;
-      box-sizing: border-box;
-      width: 100%;
-      text-align: initial;
-      background-image: linear-gradient(130deg, #3E274F 0%, #280031 61%);
       font-size: 18px;
-      color: #fff;
-      margin-top: 10px;
+      flex-shrink: 0;
     }
 
-    .faq-answer.active {
+    .features-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .feature-card {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 12px;
+      padding: 20px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .feature-card.highlight {
+      border-color: #ff7a00;
+      background: linear-gradient(160deg, #1a1a1a, #0d0d0d);
+    }
+
+    .feature-icon {
+      font-size: 30px;
+      flex-shrink: 0;
+    }
+
+    .feature-card h3 {
+      color: #ff7a00;
+      font-size: 17px;
+      margin-bottom: 6px;
+    }
+
+    .feature-card p {
+      color: #bbb;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .bonus-box {
+      background: #0d0d0d;
+      border: 2px dashed #ff7a00;
+      border-radius: 12px;
+      padding: 22px 20px;
+      margin: 12px 0;
+    }
+
+    .bonus-box .bonus-tag {
+      background: #ff7a00;
+      color: #000;
+      font-size: 11px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .bonus-box h3 {
+      color: #fff;
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .bonus-box p {
+      color: #bbb;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .bonus-box .value {
+      color: #4fce5c;
+      font-size: 14px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .offer-box {
+      background: linear-gradient(160deg, #1a1a1a, #0a0a0a);
+      border: 2px solid #ff7a00;
+      border-radius: 16px;
+      padding: 34px 24px;
+      text-align: center;
+      margin: 40px 0;
+    }
+
+    .offer-box .offer-tag {
+      background: #ff7a00;
+      color: #000;
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 5px 16px;
+      border-radius: 20px;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .offer-box h2 {
+      color: #fff;
+      font-size: 26px;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .offer-box h2 span { color: #ff7a00; }
+
+    .offer-box .offer-desc {
+      color: #aaa;
+      font-size: 15px;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .price-old {
+      color: #666;
+      font-size: 16px;
+      text-decoration: line-through;
+      margin-bottom: 4px;
+    }
+
+    .price-current {
+      color: #4fce5c;
+      font-size: 52px;
+      font-weight: bold;
+      line-height: 1;
+    }
+
+    .price-current small {
+      font-size: 22px;
+      vertical-align: super;
+    }
+
+    .price-note {
+      color: #888;
+      font-size: 13px;
+      margin-top: 6px;
+    }
+
+    .countdown-box {
+      background: #b71c1c;
+      border-radius: 8px;
+      padding: 12px 20px;
+      margin: 18px auto;
+      max-width: 360px;
+      text-align: center;
+    }
+
+    .countdown-box p {
+      color: #fff;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 4px;
+    }
+
+    #contador-back {
+      color: #fff;
+      font-size: 26px;
+      font-weight: bold;
       display: block;
     }
 
-    .profile-container {
-      margin-top: 250px;
-      width: 80%;
-      margin-bottom: 30px;
-    }
-
-    .profile {
-      width: 150px;
-      border-radius: 8px;
-    }
-
-    .profile-text {
-      color: #fff;
-      margin-top: 10px;
-      font-size: 17px;
-    }
-
-    .footer {
-      margin-top: 250px;
-      background-color: #1a1a1a;
-      color: #fff;
-      height: 70px;
+    .btn-cta {
+      display: block;
       width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 17px;
-      box-sizing: border-box;
-      padding: 10px;
-    }
-
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 100000000000;
-      display: none;
-    }
-
-    .contentModal {
-      background-image: linear-gradient(180deg, #49390f 0%, #000000 100%);
-      width: 95%;
-      max-width: 600px;
-      height: 80%;
-      max-height: 600px;
-      border-radius: 8px;
-      border: 3px solid #fff;
+      max-width: 480px;
+      margin: 18px auto 0;
+      padding: 20px 10px;
+      background: linear-gradient(150deg, #4fce5c 0%, #198835 100%);
       color: #fff;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      padding: 20px 0;
-      box-sizing: border-box;
-    }
-
-    .titleModal {
-      font-size: 30px;
-      max-width: 95%;
+      font-size: 20px;
       font-weight: bold;
-    }
-
-    .divider {
-      display: flex;
-      align-items: center;
-      column-gap: 10px;
-      margin: 20px 0;
-    }
-
-    .line {
-      height: 1px;
-      width: 130px;
-      background-color: #fff;
-    }
-
-    .fecharModal {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background-color: #ff3333;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #fff;
-      font-size: 25px;
-      margin-top: 30px;
+      border: none;
+      border-radius: 10px;
       cursor: pointer;
-    }
-
-
-    .faq-container {
-      margin: 60px 0;
-      width: 100%;
-      max-width: 610px;
-      background: #111;
-      padding: 20px;
-      box-sizing: border-box;
-      border-radius: 8px;
-      color: #fff;
-    }
-
-    h2 {
+      text-decoration: none;
+      animation: pulsar 2s infinite ease-in-out;
       text-align: center;
+    }
+
+    .btn-cta small {
+      display: block;
+      font-size: 12px;
+      font-weight: normal;
+      margin-top: 5px;
+      opacity: 0.85;
+    }
+
+    .btn-cta:hover { opacity: 0.92; }
+
+    .guarantee {
+      color: #777;
+      font-size: 13px;
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    .urgency-box {
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-left: 5px solid #e53935;
+      border-radius: 0 10px 10px 0;
+      padding: 18px 20px;
+      margin: 28px 0;
+    }
+
+    .urgency-box p {
+      color: #ccc;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    .urgency-box strong { color: #fff; }
+
+    .downsell-section {
+      margin-top: 60px;
+    }
+
+    .downsell-banner {
+      background: #b71c1c;
+      border-radius: 10px 10px 0 0;
+      padding: 14px 20px;
+      text-align: center;
+    }
+
+    .downsell-banner p {
+      color: #fff;
+      font-weight: bold;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .downsell-box {
+      background: #111;
+      border: 2px solid #b71c1c;
+      border-top: none;
+      border-radius: 0 0 14px 14px;
+      padding: 28px 22px;
+      text-align: center;
+    }
+
+    .downsell-box h2 {
+      color: #fff;
+      font-size: 22px;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .downsell-box h2 span { color: #ff7a00; }
+
+    .downsell-box .desc {
+      color: #aaa;
+      font-size: 15px;
+      line-height: 1.6;
       margin-bottom: 20px;
+    }
+
+    .downsell-includes {
+      list-style: none;
+      text-align: left;
+      margin-bottom: 22px;
+    }
+
+    .downsell-includes li {
+      color: #ccc;
+      font-size: 14px;
+      padding: 7px 0;
+      border-bottom: 1px solid #1a1a1a;
+      display: flex;
+      gap: 8px;
+    }
+
+    .downsell-includes li::before {
+      content: "✓";
+      color: #4fce5c;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+
+    .downsell-price {
+      color: #4fce5c;
+      font-size: 42px;
+      font-weight: bold;
+      line-height: 1;
+      margin: 10px 0 4px;
+    }
+
+    .downsell-price small {
+      font-size: 20px;
+      vertical-align: super;
+    }
+
+    .downsell-note {
+      color: #777;
+      font-size: 13px;
+      margin-bottom: 18px;
+    }
+
+    .btn-downsell {
+      display: block;
+      width: 100%;
+      max-width: 420px;
+      margin: 0 auto;
+      padding: 17px 10px;
+      background: linear-gradient(150deg, #e53935, #b71c1c);
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .btn-downsell small {
+      display: block;
+      font-size: 12px;
+      font-weight: normal;
+      margin-top: 4px;
+      opacity: 0.85;
+    }
+
+    .skip-link {
+      display: block;
+      margin-top: 14px;
+      color: #555;
+      font-size: 13px;
+      text-decoration: underline;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .skip-link:hover { color: #888; }
+
+    .faq-section {
+      background: #0d0d0d;
+      border-radius: 12px;
+      padding: 28px 22px;
+      margin-top: 44px;
+    }
+
+    .faq-section h2 {
+      color: #fff;
+      font-size: 20px;
+      margin-bottom: 22px;
+      text-align: center;
     }
 
     .accordion .item {
       margin-bottom: 10px;
-      border: 1px solid #333;
-      border-radius: 5px;
+      border: 1px solid #222;
+      border-radius: 6px;
       overflow: hidden;
     }
 
     .question {
-      background: #000;
+      background: #111;
       color: #fff;
       padding: 15px;
       width: 100%;
       text-align: left;
       border: none;
       cursor: pointer;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: bold;
       transition: background 0.3s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
-    .question:hover {
-      background: #222;
+    .question:hover  { background: #1a1a1a; }
+    .question.active { background: #222; }
+
+    .question .chevron {
+      font-size: 12px;
+      transition: transform 0.3s;
+      flex-shrink: 0;
     }
 
-    .question.active {
-      background: #333;
-    }
+    .question.active .chevron { transform: rotate(180deg); }
 
     .answer {
       background: #1a1a1a;
       overflow: hidden;
       max-height: 0;
-      transition: max-height 0.3s ease;
-      padding: 0 15px;
+      transition: max-height 0.35s ease;
     }
 
-    .answer p,
-    .answer {
-      font-size: 15px;
-      line-height: 1.6;
-      margin: 10px 0;
+    .answer p {
+      color: #ccc;
+      font-size: 14px;
+      line-height: 1.65;
+      padding: 14px 16px;
     }
 
-    .whatsapp-contact {
+    .footer {
+      background: #0d0d0d;
+      color: #444;
       text-align: center;
-      margin-top: 30px;
-      padding-top: 20px;
-      border-top: 1px solid #333;
+      padding: 24px 16px;
+      font-size: 13px;
+      line-height: 2;
+      margin-top: 50px;
     }
 
-    .whatsapp-contact p {
-      font-size: 18px;
-      margin-bottom: 10px;
-    }
+    .footer a { color: #444; text-decoration: underline; }
 
-    .whatsapp-contact a {
-      display: inline-block;
-      background: #25D366;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
-      transition: background 0.3s ease;
-    }
-
-    .whatsapp-contact a:hover {
-      background: #1ebc5c;
-    }
-
-    .professor-photo {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      background-image: url("./assets/images/profile.jpeg");
-      background-size: cover;
-      background-position: 30% 40%;
-      margin-bottom: 20px;
+    #notificacoes-vendas {
+      position: fixed;
+      bottom: 20px;
+      right: 15px;
+      z-index: 999999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
     @media (max-width: 600px) {
-
-      .question,
-      .answer {
-        font-size: 14px;
-      }
-
-      .whatsapp-contact a {
-        width: 100%;
-        box-sizing: border-box;
-      }
+      h1.headline { font-size: 24px; }
+      .price-current { font-size: 42px; }
+      .btn-cta { font-size: 17px; }
+      .pull-quote { font-size: 16px; }
     }
   </style>
-<script>!function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);</script>
-<link rel="preload" href="https://scripts.converteai.net/beb06ebc-0219-4b97-b88f-8ccab6eb2442/players/6aa818c18916dbdbc83269db/v4/player.js" as="script">
-<link rel="preload" href="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js" as="script">
-<link rel="preload" href="https://cdn.converteai.net/beb06ebc-0219-4b97-b88f-8ccab6eb2442/6aa818af0d45faff80faa3c0/main.m3u8" as="fetch">
-<link rel="dns-prefetch" href="https://cdn.converteai.net">
-<link rel="dns-prefetch" href="https://scripts.converteai.net">
-<link rel="dns-prefetch" href="https://images.converteai.net">
-<link rel="dns-prefetch" href="https://license.vturb.com">
-  
 </head>
-<div id="notificacoes-vendas" style="
-  position: fixed;
-  bottom: 20px;
-  right: 15px;
-  z-index: 999999;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-"></div>
+
+<div id="notificacoes-vendas"></div>
 
 <body>
-  <div class="container">
-    <div class="content">
-      <div style="position: relative; width: 100%; max-width: 600px;">
-        <vturb-smartplayer id="vid-6aa818c18916dbdbc83269db" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 178.21782178217822% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer> <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/beb06ebc-0219-4b97-b88f-8ccab6eb2442/players/6aa818c18916dbdbc83269db/v4/player.js", s.async=!0,document.head.appendChild(s); </script>
 
-       
-        <span style="position: absolute; bottom: .5px; z-index: 1000000; right: 30px;">🎁</span>
+  <div class="top-bar">⚠️ ESPERA. ANTES DE CERRAR ESTA PÁGINA, LEE ESTO HASTA EL FINAL</div>
+
+  <div class="wrapper">
+
+    <div class="open-line">
+      Entiendo que no quieres ver un video ahora mismo.<br>
+      Por eso puse <strong>todo lo que necesitas saber aquí, en texto.</strong><br>
+      Tómate 3 minutos. Esto puede cambiar tu vida.
+    </div>
+
+    <h1 class="headline">
+      Un joven de 26 años de la periferia facturó<br>
+      <span>más de 5 millones de dólares</span><br>
+      usando un sistema que crea productos en automático
+    </h1>
+
+    <p class="sub">
+      Y hoy, por primera vez, está abriendo el acceso a personas comunes, incluido tú, que estás en esta página ahora mismo.
+    </p>
+
+
+    <hr class="divider">
+
+    <h2 class="section-title">Mi nombre es <span>Vinicius Armóndez</span></h2>
+
+    <p class="body-text">
+      Tengo 26 años. Ya he facturado más de <strong>5 millones de dólares</strong> en el mundo digital.<br><br>
+      Pero tranquilo, no estoy aquí para prometerte montañas de dinero. A mí me tomó años llegar hasta este resultado.
+    </p>
+
+    <p class="body-text">
+      Lo que sí te voy a mostrar es cómo una persona común, <em>sin ningún conocimiento previo</em>, puede simplemente activar este sistema y empezar a tener ventas en absoluto automático, pudiendo facturar hasta <strong>20 mil dólares al mes</strong>...
+    </p>
+
+    <ul class="yes-list">
+      <li>Sin necesidad de hablar con nadie</li>
+      <li>Sin necesidad de viralizar</li>
+      <li>Sin hacer bailes ni videos en redes sociales</li>
+      <li>Sin esperar meses para que funcione</li>
+    </ul>
+
+
+    <div class="testimonial-text">
+      <div class="result">$1.377 en 7 días</div>
+      <p>"Activé el sistema solo una vez y en siete días obtuve este resultado. No lo puedo creer."</p>
+      <p class="author">Carlos, usuario del Sistema Millonario</p>
+    </div>
+
+    <div class="testimonial-text">
+      <div class="result">$1.250 en 1 día</div>
+      <p>"Lo activé ayer y hoy tengo $1.250 en mi cuenta. Estoy impactada con este sistema en solo un día."</p>
+      <p class="author">Alumna del Sistema Millonario</p>
+    </div>
+
+    <div class="testimonial-text">
+      <div class="result">$1.420 en el primer día</div>
+      <p>"Seguí el paso a paso y hoy hice $1.420, y nunca había vendido nada. Ya avisé en mi trabajo que voy a renunciar."</p>
+      <p class="author">Alumno del Sistema Millonario</p>
+    </div>
+
+
+    <hr class="divider">
+
+    <h2 class="section-title">Lo que <span>NO funciona</span> y te hace perder tiempo</h2>
+
+    <p class="body-text">
+      Yo también lo intenté todo. De verdad, <strong>absolutamente todo</strong> lo que te puedas imaginar:
+    </p>
+
+    <ul class="nope-list">
+      <li>Afiliados y agregar gente en WhatsApp</li>
+      <li>Social Media y gestor de tráfico</li>
+      <li>Crear contenido para viralizar</li>
+      <li>Lanzamiento de productos digitales</li>
+      <li>Dropshipping y plataformas de productos físicos</li>
+      <li>TikTok Shop y bailes en redes sociales</li>
+    </ul>
+
+    <p class="body-text">
+      Nada de eso me hizo rico. <strong>Lo que sí me hizo millonario</strong> fue algo completamente diferente. Y ahora te voy a explicar exactamente qué fue.
+    </p>
+
+
+    <hr class="divider">
+
+    <h2 class="section-title">Vine de la periferia. <span>Sin asfalto en mi calle.</span></h2>
+
+    <p class="body-text">
+      Empecé a los 19 años en un apartamento de un solo ambiente. En mi calle no había asfalto. Era puro barro. Pasé toda mi vida viendo a mis padres ganar muy poco dinero. Mi madre siempre trabajó para otros con salario fijo. Mi padre acababa de quebrar su empresa después de la pandemia.
+    </p>
+
+    <p class="body-text">
+      Pero aún así, yo tenía algo dentro de mí. <em>Siempre supe que iba a hacerme rico.</em>
+    </p>
+
+    <div class="pull-quote">
+      "Si no estaba yendo a donde quería llegar, era porque me faltaba algún conocimiento."
+      <cite>Libro que cambió mi forma de pensar</cite>
+    </div>
+
+    <p class="body-text">
+      Hasta que un día, con los <strong>últimos 200 dólares que me quedaban</strong>, aposté todo a un producto. Y ese mismo día me generó más de <em>mil dólares en ventas de forma automática</em>. Sin hablar con nadie. Sin aparecer. Solo el sistema trabajando por mí.
+    </p>
+
+    <p class="body-text">
+      Ahí hice las cuentas: <strong>si hago mil dólares en un día, son 30 mil al mes</strong>. Más que muchos médicos y abogados. Y yo tenía solo 21 años.
+    </p>
+
+    <p class="body-text">
+      Me obsesioné. Pasé un año entero en modo cueva. Y ahí hice <strong>mi primer millón con 22 años</strong>. Y en el mismo año, otros 2 millones más.
+    </p>
+
+
+    <div class="dep-grid">
+      <div class="dep-card">
+        <div class="dep-card-inner"><img src="assets/images/dep1.png" alt="Resultado de alumno" /></div>
+      </div>
+      <div class="dep-card">
+        <div class="dep-card-inner"><img src="assets/images/dep2.png" alt="Resultado de alumno" /></div>
+      </div>
+    </div>
+
+
+    <hr class="divider">
+
+    <h2 class="section-title">Entonces creé el <span>Sistema Millonario</span></h2>
+
+    <p class="body-text">
+      Tomé todo lo que aprendí, cada patrón, cada estrategia, cada error, y lo puse en una <strong>inteligencia artificial nueva</strong> que desarrollamos con programadores de última generación que ya trabajaron en grandes empresas de tecnología.
+    </p>
+
+    <p class="body-text">
+      No tiene nada que ver con ChatGPT. No son esos prompts que circulan por Internet y que no funcionan. Nosotros <em>creamos nuestro propio software</em>, con más de 20 inteligencias artificiales dentro, entrenadas con todo lo que nos llevó a más de 5 millones de dólares en facturación.
+    </p>
+
+    <div class="pull-quote">
+      "En mi primer día casi hice todo mi salario. Ya avisé en mi trabajo que voy a renunciar."
+      <cite>Alumno del Sistema Millonario</cite>
+    </div>
+
+    <p class="body-text">
+      Ahora, en lugar de tardar meses para crear un producto, el Sistema Millonario genera todo listo <em>en cuestión de horas con solo unos pocos clics</em>.
+    </p>
+
+
+    <hr class="divider">
+
+    <h2 class="section-title">¿Cómo funciona <span>el Sistema Millonario</span>?</h2>
+
+    <div class="features-grid">
+
+      <div class="feature-card">
+        <span class="feature-icon">🤖</span>
+        <div>
+          <h3>Crea productos infinitos y validados</h3>
+          <p>Solo das algunos clics y la IA genera productos completos listos para vender ese mismo día. Ya son más de 3 productos que superaron el millón de dólares cada uno usando este sistema.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <span class="feature-icon">📄</span>
+        <div>
+          <h3>Genera la estructura completa del producto</h3>
+          <p>Copia de ventas, página de ventas, guión de video, anuncios e imágenes. Absolutamente todo generado automáticamente, sin que necesites contratar a nadie.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <span class="feature-icon">🎯</span>
+        <div>
+          <h3>Robot de ventas en automático</h3>
+          <p>Un robot entrenado durante 4 años identifica al cliente ideal para cada producto que creas y activa las estrategias exactas para que empieces a vender sin hablar con nadie.</p>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <span class="feature-icon">💰</span>
+        <div>
+          <h3>100% de las ganancias para ti</h3>
+          <p>No es afiliado. No es dropshipping. No es TikTok Shop. Los productos son tuyos y todo lo que ganas va directo a tu bolsillo.</p>
+        </div>
+      </div>
+
+      <div class="feature-card highlight">
+        <span class="feature-icon">⚡</span>
+        <div>
+          <h3>Trabaja 24 horas por ti, todos los días</h3>
+          <p>Mientras duermes, el sistema sigue generando productos y vendiendo. Sin descanso. Sin salario. Sin depender de nadie.</p>
+        </div>
+      </div>
+
+    </div>
+
+
+    <div class="dep-grid">
+      <div class="dep-card">
+        <div class="dep-card-inner"><img src="assets/images/dep3.png" alt="Resultado de alumno" /></div>
+      </div>
+      <div class="dep-card">
+        <div class="dep-card-inner"><img src="assets/images/dep4.png" alt="Resultado de alumno" /></div>
+      </div>
+    </div>
+
+    <div class="testimonial-text">
+      <div class="result">$50.000+ acumulados</div>
+      <p>"Gracias al Sistema Millonario ya logré alcanzar un poco más de 50 mil dólares. El mes pasado llegamos a hacer 16 mil dólares. Y la semana pasada, en un solo día, llegamos a hacer 5 mil. Nuestro récord hasta ahora."</p>
+      <p class="author">Alumno del Sistema Millonario</p>
+    </div>
+
+    <div class="testimonial-text">
+      <div class="result">$2.500 usando el sistema</div>
+      <p>"Solo usando su sistema ya he ganado 2.500 dólares. Confié mucho en ti, Vinicius. Demostraste que cualquiera puede ganar dinero."</p>
+      <p class="author">Alumno del Sistema Millonario</p>
+    </div>
+
+
+    <hr class="divider">
+
+    <h2 class="section-title">Además del Sistema, también recibes <span>estos bonos</span></h2>
+
+    <div class="bonus-box">
+      <span class="bonus-tag">Bono #1</span>
+      <h3>Módulo Mentalidad Millonaria</h3>
+      <p>El camino mental exacto que desarrollé para pasar de no tener nada, vivir en la periferia de una ciudad pequeña, a facturar más de 5 millones de dólares en Internet.</p>
+      <p class="value">Valor: $97. Incluido gratis.</p>
+    </div>
+
+    <div class="bonus-box">
+      <span class="bonus-tag">Bono #2</span>
+      <h3>3 Plantillas de Páginas de Ventas Validadas</h3>
+      <p>Las mismas páginas que usamos nosotros, ya probadas y con resultados reales. Solo copias, pegas y empiezas a vender. Solo este bono vale más de $500 si contrataras a alguien para hacerlo.</p>
+      <p class="value">Valor: $500. Incluido gratis.</p>
+    </div>
+
+    <div class="bonus-box">
+      <span class="bonus-tag">Bono #3</span>
+      <h3>Biblioteca de +100 Comandos para la IA</h3>
+      <p>Prompts listos para que extraigas el 100% de la inteligencia del Sistema Millonario desde el primer día, sin necesidad de saber nada de tecnología.</p>
+      <p class="value">Valor: $97. Incluido gratis.</p>
+    </div>
+
+
+    <div class="offer-box">
+
+      <span class="offer-tag">ACCESO COMPLETO. SOLO HOY</span>
+
+      <h2>Sistema Millonario Completo<br><span>+ Todos los Bonos</span></h2>
+
+      <p class="offer-desc">
+        Acceso inmediato al sistema, al curso completo paso a paso y a los 3 bonos exclusivos.<br>
+        Solo pagas la tarifa de mantenimiento del servidor.
+      </p>
+
+      <p class="price-old">Valor real: más de $700</p>
+      <p class="price-current"><small>$</small>17</p>
+      <p class="price-note">Pago único. Acceso inmediato.</p>
+      <p style="color:#666; font-size:12px; margin-top:10px;">💵 Valor en dólares americanos (USD). El Sistema Millonario te permite vender a cualquier persona en el mundo, en cualquier país, sin restricciones.</p>
+
+      <div class="countdown-box">
+        <p id="oferta-back-titulo">Esta oferta expira pronto</p>
+        <span id="contador-back">00h 00m 00s</span>
+      </div>
+
+      <!-- CHECKOUT: trocado para o link do Hub.la de US$17 (era Hotmart) -->
+      <a href="https://pay.hub.la/NJ4GVeqLSzyyMa3RG0B2" class="btn-cta smartplayer-click-event">
+        QUIERO ACCEDER AL SISTEMA MILLONARIO AHORA
+        <small>🔒 Pago 100% seguro</small>
+      </a>
+
+      <p class="guarantee">✅ Garantía de 7 días. Si no quedas satisfecho, te devolvemos el dinero sin preguntas.</p>
+
+    </div>
+
+
+    <div class="urgency-box">
+      <p>
+        ⚠️ <strong>Solo liberé 49 accesos en esta página.</strong> Cuando esos accesos se agoten, retiro el video del aire, porque quiero acompañar de cerca a todos los que estén usando el sistema y creando productos. Después de alcanzar el límite, no habrá forma de acceder a este precio.
+      </p>
+    </div>
+
+    <!-- CHECKOUT: trocado para o link do Hub.la de US$17 (era Hotmart) -->
+    <a href="https://pay.hub.la/NJ4GVeqLSzyyMa3RG0B2" class="btn-cta smartplayer-click-event" style="max-width:480px; margin: 0 auto 40px;">
+      SÍ, QUIERO GARANTIZAR MI ACCESO AHORA
+      <small>⏳ Oferta por tiempo limitado</small>
+    </a>
+
+
+    <div class="dep-grid">
+      <div class="dep-card">
+        <div class="dep-card-inner"><img src="assets/images/dep5.png" alt="Resultado de alumno" /></div>
+      </div>
+    </div>
+
+    <div class="testimonial-text">
+      <div class="result">$2.200 en 10 días</div>
+      <p>"Solo copié y pegué la estructura. No cambié nada. Ya me generó cerca de $2.200. Y ni voy a tocar nada. Lo dejo ahí tranquilo para que sea mi ingreso pasivo. Ya me está ayudando a pagar las cuotas de mi coche nuevo."</p>
+      <p class="author">Alumno del Sistema Millonario</p>
+    </div>
+
+    <div class="testimonial-text">
+      <div class="result">$670 antes de las 5pm</div>
+      <p>"Ya vendí más de $670 y ni siquiera son las 17 horas. Y el detalle: fue con un producto que creé anoche."</p>
+      <p class="author">Vinicius, alumno del Sistema Millonario</p>
+    </div>
+
+
+    <div class="faq-section">
+
+      <h2>Preguntas Frecuentes</h2>
+
+      <div class="accordion">
+
+        <div class="item">
+          <button class="question">¿Necesito experiencia previa para usar el Sistema Millonario? <span class="chevron">▼</span></button>
+          <div class="answer"><p>No. El sistema fue creado exactamente para personas sin experiencia. La IA genera todo listo: el producto, la página, el anuncio, el guión. Solo sigues el paso a paso y empiezas a vender.</p></div>
+        </div>
+
+        <div class="item">
+          <button class="question">¿Cuánto tiempo tarda en funcionar? <span class="chevron">▼</span></button>
+          <div class="answer"><p>Hay personas que vendieron el mismo día que activaron el sistema. El tiempo depende de cuándo empieces a aplicar, pero el producto ya estará listo para vender el mismo día que accedas.</p></div>
+        </div>
+
+        <div class="item">
+          <button class="question">¿Necesito invertir en publicidad? <span class="chevron">▼</span></button>
+          <div class="answer"><p>Dentro del sistema hay un robot de ventas que te da las estrategias exactas para activar en las herramientas de tráfico. Puedes empezar con una inversión pequeña. El mismo sistema te guía paso a paso.</p></div>
+        </div>
+
+        <div class="item">
+          <button class="question">¿Es lo mismo que ChatGPT o esos negocios de prompts? <span class="chevron">▼</span></button>
+          <div class="answer"><p>No. El Sistema Millonario es un software propio, desarrollado por Vinicius y su equipo con programadores especializados. Reúne más de 20 inteligencias artificiales avanzadas entrenadas con los patrones exactos que generaron más de 5 millones de dólares en ventas.</p></div>
+        </div>
+
+        <div class="item">
+          <button class="question">¿Hay garantía si no funciona? <span class="chevron">▼</span></button>
+          <div class="answer"><p>Sí. Tienes 7 días de garantía. Si accedes al sistema, sigues el paso a paso y no quedas satisfecho, devolvemos el 100% de tu dinero, sin preguntas y sin burocracia.</p></div>
+        </div>
+
+        <div class="item">
+          <button class="question">¿Cuándo recibo el acceso? <span class="chevron">▼</span></button>
+          <div class="answer"><p>El acceso es inmediato. En el momento en que completas el pago, recibes las instrucciones de acceso directamente en tu correo electrónico.</p></div>
+        </div>
 
       </div>
 
-      <span class="esconder" style="font-size: 15px; margin-top: 40px;">🎁 CUPÓN DE DESCUENTO APLICADO</span>
+    </div>
 
 
-      <div class="esconder">
-        <div
-          style="padding: 15px; margin-top: 20px; box-sizing: border-box; display: flex; justify-content: center; background-color: #c55322; color: #000; border-radius: 10px;">
-          <div class="esconder" id="price" style="width: 100%; box-sizing: border-box; max-width: 600px;">
-            <div id="oferta">
-              <h1 style="margin-bottom: 10px;">¡ÚLTIMO DÍA!</h1>
-              <h2></h2>
-              <p id="contador"></p>
-              <h4 style="margin-top: 15px;">¡OFERTA VÁLIDA POR TIEMPO LIMITADO!</h4>
-            </div>
-          </div>
-        </div>
+    <div class="downsell-section">
+
+      <div class="downsell-banner">
+        <p>🔥 ESPERA. TENGO ALGO QUE DECIRTE ANTES DE QUE TE VAYAS</p>
       </div>
 
-      <div class="modal-descuento esconder2"> <div class="modal-descuento-content"> <div class="modal-badge">🎉 ¡FELICIDADES!</div> <h2>¡Has desbloqueado un descuento exclusivo!</h2> <p class="modal-texto"> Como beneficio especial, tu precio acaba de reducirse aún más. </p> <div class="precio-antiguo"> Antes: <span>US$27</span> </div> <div class="precio-nuevo"> Ahora solo <strong>US$17</strong> </div> <p class="modal-aviso"> ⚠️ Esta oportunidad es limitada y puede desaparecer en cualquier momento. </p> <a href="https://pay.hub.la/NJ4GVeqLSzyyMa3RG0B2" class="boton-descuento smartplayer-click-event" >GARANTIZAR MI ACCESO</a> </div> </div>
+      <div class="downsell-box">
+
+        <h2>El <span>Sistema Millonario completo</span><br>por solo $17</h2>
+
+        <p class="desc">
+          Sé que el precio no fue lo que te detuvo. Por eso quiero darte una última oportunidad de acceder al Sistema Millonario completo, con todo lo que ya viste aquí, por $10 menos. Porque prefiero que entres con descuento a que te quedes sin esto.
+        </p>
+
+        <ul class="downsell-includes">
+          <li>Acceso completo al Sistema Millonario con la IA que crea productos infinitos</li>
+          <li>Curso completo paso a paso para empezar a vender desde cero</li>
+          <li>Robot de ventas para dirigir al cliente ideal a tu producto en automático</li>
+          <li>Bono 1: Módulo Mentalidad Millonaria</li>
+          <li>Bono 2: 3 Plantillas de Páginas de Ventas Validadas</li>
+          <li>Bono 3: Biblioteca de más de 100 Comandos para la IA</li>
+        </ul>
+
+        <p class="price-old">Precio en esta página: $17</p>
+        <p class="downsell-price"><small>$</small>17</p>
+        <p class="downsell-note">Pago único. Acceso inmediato. Todo incluido.</p>
+        <p style="color:#666; font-size:12px; margin-bottom:16px;">💵 Valor en dólares americanos (USD). Puedes vender en cualquier país del mundo.</p>
+
+        <!-- CHECKOUT: trocado para o link do Hub.la de US$17 (era Hotmart) -->
+        <a href="https://pay.hub.la/NJ4GVeqLSzyyMa3RG0B2" class="btn-downsell">
+          QUIERO EL SISTEMA MILLONARIO COMPLETO POR $17
+          <small>🔒 Pago seguro · Acceso inmediato</small>
+        </a>
+
+        <p style="color:#555; font-size:12px; margin-top:16px;">Esta oferta no se repetirá. Al cerrar esta página, el descuento desaparece para siempre.</p>
 
-      <a style="margin-top: 20px;" href="https://pay.hub.la/bysccK05aCeyAYuLJpGh" class="esconder">
-        <button style="margin-top: 10px;" class="button smartplayer-click-event">GARANTIZAR MI ACCESO</button>
-      </a>
-
-
-
-
-      <section class="esconder"
-        style="width:100%; padding:40px 15px; margin-top: 20px; background:#0a0a0a; box-sizing:border-box;">
-
-        <div style="max-width:600px; margin:0 auto; text-align:center;">
-
-          <h2 style="color:#fff; font-size:26px; margin-bottom:10px;">
-            TODO LO QUE RECIBES AL ACCEDER AL
-          </h2>
-
-          <h1 style="color:#ff7a00; font-size:30px; margin-bottom:30px;">
-            SISTEMA MILLONARIO 🚀
-          </h1>
-
-        </div>
-
-        <!-- ITEM 1 -->
-        <div
-          style="max-width:600px; margin:0 auto 30px auto; background:#111; border-radius:12px; padding:20px; border:1px solid #222;">
-
-          <img src="assets/images/imagen1.png" style="width:100%; border-radius:10px; margin-bottom:15px;" />
-
-          <h3 style="color:#ff7a00; font-size:20px; margin-bottom:10px;">
-            Acceso Completo al Sistema Millonario
-          </h3>
-
-          <p style="color:#ccc; font-size:15px; line-height:1.5;">
-            Accede a la plataforma que crea productos ganadores automáticamente con inteligencia artificial, incluso si
-            estás empezando desde cero.
-          </p>
-
-        </div>
-
-        <!-- ITEM 2 -->
-        <div
-          style="max-width:600px; margin:0 auto 30px auto; background:#111; border-radius:12px; padding:20px; border:1px solid #222;">
-
-          <img src="assets/images/imagen2.png" style="width:100%; border-radius:10px; margin-bottom:15px;" />
-
-          <h3 style="color:#ff7a00; font-size:20px; margin-bottom:10px;">
-            Entrenamiento Completo Paso a Paso
-          </h3>
-
-          <p style="color:#ccc; font-size:15px; line-height:1.5;">
-            Aprende exactamente cómo usar el sistema para generar ingresos, con un método claro, directo y sin
-            complicaciones.
-          </p>
-
-        </div>
-
-        <!-- ITEM 3 -->
-        <div
-          style="max-width:600px; margin:0 auto 30px auto; background:#111; border-radius:12px; padding:20px; border:1px solid #222;">
-
-          <img src="assets/images/imagen3.png" style="width:100%; border-radius:10px; margin-bottom:15px;" />
-
-          <h3 style="color:#ff7a00; font-size:20px; margin-bottom:10px;">
-            Método de Ventas en Automático
-          </h3>
-
-          <p style="color:#ccc; font-size:15px; line-height:1.5;">
-            Descubre cómo vender todos los días de forma automática, sin depender de experiencia previa ni conocimientos
-            técnicos.
-          </p>
-
-        </div>
-
-        <!-- ITEM 4 -->
-        <div
-          style="max-width:600px; margin:0 auto 30px auto; background:#111; border-radius:12px; padding:20px; border:1px solid #222;">
-
-          <img src="assets/images/imagen4.png" style="width:100%; border-radius:10px; margin-bottom:15px;" />
-
-          <h3 style="color:#ff7a00; font-size:20px; margin-bottom:10px;">
-            Templates de Ventas Validados
-          </h3>
-
-          <p style="color:#ccc; font-size:15px; line-height:1.5;">
-            Utiliza estructuras listas que ya están probadas y funcionan, para vender más rápido y sin perder tiempo
-            creando desde cero.
-          </p>
-
-        </div>
-
-        <!-- ITEM 5 -->
-        <div
-          style="max-width:600px; margin:0 auto 30px auto; background:#111; border-radius:12px; padding:20px; border:1px solid #222;">
-
-          <img src="assets/images/imagen5.png" style="width:100%; border-radius:10px; margin-bottom:15px;" />
-
-          <h3 style="color:#ff7a00; font-size:20px; margin-bottom:10px;">
-            8 Robots Funcionando para Ti
-          </h3>
-
-          <p style="color:#ccc; font-size:15px; line-height:1.5;">
-            Automatiza tareas clave con inteligencia artificial y deja que el sistema trabaje por ti mientras generas
-            resultados.
-          </p>
-
-        </div>
-
-        <!-- ITEM 6 -->
-        <div
-          style="max-width:600px; margin:0 auto 30px auto; background:#111; border-radius:12px; padding:20px; border:1px solid #222;">
-
-          <img src="assets/images/imagen6.png" style="width:100%; border-radius:10px; margin-bottom:15px;" />
-
-          <h3 style="color:#ff7a00; font-size:20px; margin-bottom:10px;">
-            Generador de Imágenes + Anuncios + Páginas
-          </h3>
-
-          <p style="color:#ccc; font-size:15px; line-height:1.5;">
-            Crea imágenes, anuncios y páginas completas en minutos sin saber diseño ni programación.
-          </p>
-
-        </div>
-
-        <!-- ITEM 7 -->
-        <div
-          style="max-width:600px; margin:0 auto 30px auto; background:#111; border-radius:12px; padding:20px; border:1px solid #222;">
-
-          <img src="assets/images/imagen7.png" style="width:100%; border-radius:10px; margin-bottom:15px;" />
-
-          <h3 style="color:#ff7a00; font-size:20px; margin-bottom:10px;">
-            Biblioteca de Comandos + Creador de Productos
-          </h3>
-
-          <p style="color:#ccc; font-size:15px; line-height:1.5;">
-            Accede a prompts listos y crea productos digitales completos en minutos, listos para vender.
-          </p>
-
-        </div>
-
-        <!-- ITEM 8 (FOCO FORTE) -->
-        <div
-          style="max-width:600px; margin:0 auto 30px auto; background:linear-gradient(180deg,#1a1a1a,#000); border-radius:12px; padding:20px; border:2px solid #ff7a00;">
-
-          <img src="assets/images/imagen8.png" style="width:100%; border-radius:10px; margin-bottom:15px;" />
-
-          <h3 style="color:#ff7a00; font-size:22px; margin-bottom:10px;">
-            Módulo Caja Rápida 💰
-          </h3>
-
-          <p style="color:#fff; font-size:16px; line-height:1.6;">
-            Recibe productos ya creados y listos para vender. Solo tienes que subirlos y empezar a generar ingresos
-            rápidamente, incluso sin experiencia.
-          </p>
-
-        </div>
-
-        <!-- FINAL -->
-        <div style="text-align:center; margin-top:30px;">
-          <h2 style="color:#ff7a00; font-size:26px;">
-            Y MUCHO MÁS 🔥
-          </h2>
-        </div>
-
-      </section>
-
-
-      <a style="margin-top: 20px;" href="https://pay.hub.la/bysccK05aCeyAYuLJpGh" class="esconder">
-        <button style="margin-top: 10px;" class="button smartplayer-click-event">GARANTIZAR MI ACCESO</button>
-      </a>
-
-
-      <section class="esconder" style="width:100%; padding:40px 15px; background:#000; box-sizing:border-box;">
-
-        <div style="max-width:600px; margin:0 auto; text-align:center;">
-
-          <h2 style="color:#fff; font-size:24px; margin-bottom:10px;">
-            LO QUE NUESTROS ALUMNOS ESTÁN LOGRANDO 🔥
-          </h2>
-
-          <p style="color:#aaa; font-size:15px; margin-bottom:30px;">
-            Resultados reales de personas que ya están utilizando el Sistema Millonario
-          </p>
-
-        </div>
-
-        <!-- IMAGENS -->
-        <div style="max-width:600px; margin:0 auto; display:flex; flex-direction:column; gap:20px;">
-
-          <!-- IMAGEM 1 -->
-          <div style="background:linear-gradient(145deg,#ff7a00,#ff3c00); padding:3px; border-radius:15px;">
-
-            <div style="background:#111; border-radius:12px; padding:10px;">
-              <img src="assets/images/dep1.png" style="width:100%; border-radius:10px;" />
-            </div>
-
-          </div>
-
-          <!-- IMAGEM 2 -->
-          <div style="background:linear-gradient(145deg,#ff7a00,#ff3c00); padding:3px; border-radius:15px;">
-
-            <div style="background:#111; border-radius:12px; padding:10px;">
-              <img src="assets/images/dep2.png" style="width:100%; border-radius:10px;" />
-            </div>
-
-          </div>
-
-          <div style="background:linear-gradient(145deg,#ff7a00,#ff3c00); padding:3px; border-radius:15px;">
-
-            <div style="background:#111; border-radius:12px; padding:10px;">
-              <img src="assets/images/dep3.png" style="width:100%; border-radius:10px;" />
-            </div>
-
-          </div>
-
-          <div style="background:linear-gradient(145deg,#ff7a00,#ff3c00); padding:3px; border-radius:15px;">
-
-            <div style="background:#111; border-radius:12px; padding:10px;">
-              <img src="assets/images/dep4.png" style="width:100%; border-radius:10px;" />
-            </div>
-
-          </div>
-
-          <div style="background:linear-gradient(145deg,#ff7a00,#ff3c00); padding:3px; border-radius:15px;">
-
-            <div style="background:#111; border-radius:12px; padding:10px;">
-              <img src="assets/images/dep5.png" style="width:100%; border-radius:10px;" />
-            </div>
-
-          </div>
-
-        </div>
-
-        <!-- FRASE FINAL -->
-        <div style="max-width:600px; margin:30px auto 0 auto; text-align:center;">
-
-          <p style="color:#fff; font-size:16px; line-height:1.5;">
-            Tú puedes ser el próximo en obtener resultados como estos 🚀
-          </p>
-
-        </div>
-
-      </section>
-
-
-
-
-
-      <a style="margin-top: 20px;" href="https://pay.hub.la/bysccK05aCeyAYuLJpGh" class="esconder">
-        <button style="margin-top: 10px;" class="button smartplayer-click-event">GARANTIZAR MI ACCESO</button>
-      </a>
-
-
-
-
-
-
-      <div class="footer">© SISTEMA MILLONARIO.</br> TODOS LOS DERECHOS RESERVADOS.</div>
-
-
-
-
-
-      <script>
-        // CONTROLE DE EXIBIÇÃO ATRELADO AO VÍDEO — NÃO É RASTREIO.
-        // Quando o player do VSL estiver pronto, este script programa a
-        // exibição (só visual, no navegador do próprio visitante) de
-        // elementos com classe ".esconder" após 1284 segundos (~21min)
-        // de vídeo, e dos elementos ".esconder2" (o modal de desconto)
-        // após 1756 segundos (~29min). É a lógica de "liberar o botão de
-        // compra depois de X minutos assistidos" comum em VSL.
-        var delaySeconds = 1284;
-        var delaySeconds2 = 1756;
-        var player = document.querySelector("vturb-smartplayer");
-        player.addEventListener("player:ready", function () {
-          player.displayHiddenElements(delaySeconds, [".esconder"], {
-            persist: true //
-          });
-        });
-
-        player.addEventListener("player:ready", function () {
-          player.displayHiddenElements(delaySeconds2, [".esconder2"], {
-            persist: false
-          });
-        });
-      </script>
-
-
-
-      <script>
-        // ⚠️ ATENÇÃO — "PROVA SOCIAL" FALSA / SIMULADA.
-        // Este bloco NÃO manda nem recebe dados de nenhum servidor — ele
-        // apenas sorteia nomes de uma lista fixa (50 nomes + 50
-        // sobrenomes hispânicos) e cria, no canto da tela, pop-ups tipo
-        // "Fulano aseguró su acceso con descuento" a cada 5-10 segundos,
-        // como se fossem compras acontecendo em tempo real.
-        // NENHUMA dessas "vendas" é real — são notificações 100%
-        // fictícias geradas no navegador do visitante. Recomendo avaliar
-        // se você quer manter esse tipo de prova social falsa na sua
-        // oferta (pode ter implicação ética/legal dependendo do público
-        // e da legislação do seu país sobre publicidade enganosa).
-        document.addEventListener("DOMContentLoaded", () => {
-
-          const nomes = [
-            "Juan", "Carlos", "Luis", "Miguel", "Pedro", "Jorge", "Andrés", "Diego", "Fernando", "Ricardo",
-            "María", "Ana", "Sofía", "Camila", "Valentina", "Lucía", "Daniela", "Paula", "Carla", "Fernanda",
-            "José", "Manuel", "Antonio", "Francisco", "David", "Raúl", "Sergio", "Eduardo", "Hugo", "Alberto",
-            "Laura", "Elena", "Patricia", "Gabriela", "Andrea", "Natalia", "Verónica", "Isabella", "Renata", "Juliana",
-            "Mateo", "Sebastián", "Emilio", "Cristian", "Iván", "Oscar", "Roberto", "Tomás", "Ángel", "Esteban"
-          ];
-
-          const sobrenomes = [
-            "García", "Rodríguez", "Martínez", "López", "González", "Pérez", "Sánchez", "Ramírez", "Torres", "Flores",
-            "Rivera", "Gómez", "Díaz", "Vargas", "Castro", "Ortiz", "Morales", "Silva", "Rojas", "Navarro",
-            "Mendoza", "Herrera", "Medina", "Aguilar", "Vega", "Cruz", "Reyes", "Romero", "Guerrero", "Ramos",
-            "Ortega", "Delgado", "Suárez", "Paredes", "Campos", "Cabrera", "Fuentes", "Valdez", "Peña", "Salazar",
-            "Arias", "Benítez", "Cordero", "Escobar", "Figueroa", "Galindo", "Ibarra", "León", "Montoya", "Zamora"
-          ];
-
-          const container = document.getElementById("notificacoes-vendas");
-
-          function nomeAleatorio() {
-            const nome = nomes[Math.floor(Math.random() * nomes.length)];
-            const sobrenome = sobrenomes[Math.floor(Math.random() * sobrenomes.length)];
-            return `${nome} ${sobrenome}`;
-          }
-
-          function criarNotificacao() {
-            const nome = nomeAleatorio();
-
-            const notif = document.createElement("div");
-
-            notif.style.cssText = `
-      background: rgba(20,20,20,0.95);
-      backdrop-filter: blur(8px);
-      border-radius: 12px;
-      padding: 12px 14px;
-      width: 260px;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-      border: 1px solid rgba(255,122,0,0.3);
-      transform: translateX(-120%);
-      opacity: 0;
-      transition: all 0.4s ease;
-    `;
-
-            notif.innerHTML = `
-      <div style="display:flex; align-items:center; gap:10px;">
-        <div style="
-          width:35px;
-          height:35px;
-          border-radius:50%;
-          background: linear-gradient(135deg,#ff7a00,#ff3c00);
-          display:flex;
-          align-items:center;
-          justify-content:center;
-          font-weight:bold;
-        ">
-          🔥
-        </div>
-        <div style="font-size:13px; line-height:1.3;">
-          <strong>${nome}</strong><br>
-          aseguró su acceso con descuento
-        </div>
       </div>
-    `;
 
-            container.appendChild(notif);
+    </div>
 
-            // anima entrada
-            setTimeout(() => {
-              notif.style.transform = "translateX(0)";
-              notif.style.opacity = "1";
-            }, 100);
 
-            // remove depois
-            setTimeout(() => {
-              notif.style.transform = "translateX(-120%)";
-              notif.style.opacity = "0";
+  </div>
 
-              setTimeout(() => notif.remove(), 400);
-            }, 5000);
-          }
+  <div class="footer">
+    © SISTEMA MILLONARIO. TODOS LOS DERECHOS RESERVADOS<br>
+    <a href="#">Política de Privacidad</a> &nbsp;|&nbsp; <a href="#">Términos de Uso</a>
+  </div>
 
-          // 👇 OBSERVADOR DO BOTÃO (classe .esconder)
-          const observer = new MutationObserver(() => {
-            const botao = document.querySelector(".esconder");
 
-            if (botao && window.getComputedStyle(botao).display !== "none") {
+  <script>
+    // CONTADOR REGRESSIVO DA OFERTA — NÃO É RASTREIO.
+    // Mesma lógica da página principal: calcula o tempo até a próxima
+    // marca de meia hora (:00 ou :30) no relógio local do navegador e
+    // atualiza o texto a cada segundo. Não depende de servidor externo.
+    var intervaloBack = null;
 
-              observer.disconnect();
+    function atualizarContagem() {
+      var agora = new Date();
+      var fim   = new Date();
+      var m     = agora.getMinutes();
 
-              // espera 5s depois que botão aparece
-              setTimeout(() => {
+      if (m < 30) { fim.setHours(agora.getHours(), 30, 0, 0); }
+      else        { fim.setHours(agora.getHours() + 1, 0, 0, 0); }
 
-                criarNotificacao();
+      var diff = fim - agora;
+      if (diff < 20 * 60 * 1000) {
+        if (fim.getMinutes() === 0) { fim.setHours(fim.getHours(), 30, 0, 0); }
+        else                        { fim.setHours(fim.getHours() + 1, 0, 0, 0); }
+        diff = fim - agora;
+      }
 
-                setInterval(() => {
-                  criarNotificacao();
-                }, Math.random() * 5000 + 5000); // 5 a 10s
+      var h  = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      var mi = Math.floor((diff / (1000 * 60)) % 60);
+      var s  = Math.floor((diff / 1000) % 60);
 
-              }, 5000);
-            }
-          });
+      var hf = ("0"+fim.getHours()).slice(-2);
+      var mf = ("0"+fim.getMinutes()).slice(-2);
 
-          observer.observe(document.body, {
-            attributes: true,
-            childList: true,
-            subtree: true
-          });
+      var tit  = document.getElementById("oferta-back-titulo");
+      var cont = document.getElementById("contador-back");
 
+      if (tit)  tit.textContent  = "La oferta expira a las " + hf + ":" + mf;
+      if (cont) cont.textContent = h + "h " + mi + "m " + s + "s";
+
+      if (diff <= 0) {
+        if (cont) cont.textContent = "¡Última oportunidad!";
+        clearInterval(intervaloBack);
+      }
+    }
+
+    atualizarContagem();
+    intervaloBack = setInterval(atualizarContagem, 1000);
+  </script>
+
+  <script>
+    // ACORDEÃO DO FAQ — NÃO É RASTREIO.
+    // Abre/fecha uma pergunta por vez ao clicar.
+    document.querySelectorAll(".question").forEach(function(btn) {
+      btn.addEventListener("click", function() {
+        var answer = this.nextElementSibling;
+        var isOpen = this.classList.contains("active");
+        document.querySelectorAll(".question").forEach(function(b) {
+          b.classList.remove("active");
+          b.nextElementSibling.style.maxHeight = null;
         });
-      </script>
-
-
-
-
-
-      <script>
-        // CONTADOR REGRESSIVO DA OFERTA — NÃO É RASTREIO.
-        // Calcula quanto falta até a próxima "meia hora cheia" (ex: se
-        // são 14:07, mira 14:30; se faltar menos de 20min, pula pra
-        // próxima marca) e atualiza o texto "#contador" a cada segundo,
-        // simulando um cronômetro de urgência ("a oferta acaba em...").
-        // É recalculado no relógio local do navegador — não vem de
-        // nenhum servidor externo.
-        let intervalo = null;
-        let timerIniciado = false;
-
-        function atualizarContagem() {
-          const agora = new Date();
-          let horaAtual = agora.getHours();
-          let minutosAtual = agora.getMinutes();
-
-          let fim = new Date();
-
-          // Define próximo marco :30 ou :00
-          if (minutosAtual < 30) {
-            fim.setHours(horaAtual, 30, 0, 0);
-          } else {
-            fim.setHours(horaAtual + 1, 0, 0, 0);
-          }
-
-          // Se faltar menos de 20 min, pula pro próximo marco
-          let diferenca = fim - agora;
-          if (diferenca < 20 * 60 * 1000) {
-            if (fim.getMinutes() === 0) {
-              fim.setHours(fim.getHours(), 30, 0, 0);
-            } else {
-              fim.setHours(fim.getHours() + 1, 0, 0, 0);
-            }
-          }
-
-          diferenca = fim - agora;
-
-          const horas = Math.floor((diferenca / (1000 * 60 * 60)) % 24);
-          const minutos = Math.floor((diferenca / (1000 * 60)) % 60);
-          const segundos = Math.floor((diferenca / 1000) % 60);
-
-          const horaFimFormatada = ("0" + fim.getHours()).slice(-2);
-          const minFimFormatado = ("0" + fim.getMinutes()).slice(-2);
-
-          const oferta = document.querySelector('#oferta h2');
-          const contador = document.getElementById('contador');
-
-          if (oferta) {
-            oferta.innerHTML = `La promoción termina a las ${horaFimFormatada}:${minFimFormatado}`;
-          }
-
-          if (contador) {
-            contador.innerHTML = `Termina en: ${horas}h ${minutos}m ${segundos}s`;
-          }
-
-          if (diferenca <= 0) {
-            if (contador) {
-              contador.innerHTML = "¡Aún estás a tiempo! ¡Aprovecha!";
-            }
-            clearInterval(intervalo);
-            intervalo = null;
-          }
+        if (!isOpen) {
+          this.classList.add("active");
+          answer.style.maxHeight = answer.scrollHeight + "px";
         }
+      });
+    });
+  </script>
 
-        function iniciarTimer() {
-          if (timerIniciado) return;
+  <script>
+    // ⚠️ ATENÇÃO — "PROVA SOCIAL" FALSA / SIMULADA.
+    // Igual à página principal: sorteia nomes de uma lista fixa e
+    // cria pop-ups de "Fulano acaba de asegurar su acceso" a cada
+    // 6-11 segundos. Nenhuma dessas "vendas" é real — são notificações
+    // 100% fictícias geradas no navegador do visitante, sem nenhuma
+    // conexão com vendas de verdade.
+    var nomes = [
+      "Juan","Carlos","Luis","Miguel","Pedro","Jorge","Andrés","Diego","Fernando","Ricardo",
+      "María","Ana","Sofía","Camila","Valentina","Lucía","Daniela","Paula","Carla","Fernanda",
+      "Mateo","Sebastián","Emilio","Cristian","Iván","Oscar","Roberto","Tomás","Ángel","Esteban",
+      "José","Manuel","Antonio","Francisco","David","Raúl","Sergio","Eduardo","Hugo","Alberto"
+    ];
+    var sobrenomes = [
+      "García","Rodríguez","Martínez","López","González","Pérez","Sánchez","Ramírez","Torres","Flores",
+      "Rivera","Gómez","Díaz","Vargas","Castro","Ortiz","Morales","Silva","Rojas","Navarro",
+      "Mendoza","Herrera","Medina","Aguilar","Vega","Cruz","Reyes","Romero","Guerrero","Ramos"
+    ];
 
-          const contador = document.getElementById("contador");
-          if (!contador) return;
+    function nomeAleatorio() {
+      return nomes[Math.floor(Math.random()*nomes.length)] + " " + sobrenomes[Math.floor(Math.random()*sobrenomes.length)];
+    }
 
-          // garante que está visível
-          contador.style.display = "block";
+    function criarNotificacao() {
+      var container = document.getElementById("notificacoes-vendas");
+      var notif = document.createElement("div");
+      notif.style.cssText = "background:rgba(20,20,20,0.95);backdrop-filter:blur(8px);border-radius:12px;padding:12px 14px;width:260px;color:#fff;font-family:Arial,sans-serif;box-shadow:0 8px 25px rgba(0,0,0,0.4);border:1px solid rgba(255,122,0,0.3);transform:translateX(120%);opacity:0;transition:all 0.4s ease;";
+      notif.innerHTML = '<div style="display:flex;align-items:center;gap:10px;"><div style="width:35px;height:35px;border-radius:50%;background:linear-gradient(135deg,#ff7a00,#ff3c00);display:flex;align-items:center;justify-content:center;font-size:16px;">🔥</div><div style="font-size:13px;line-height:1.3;"><strong>' + nomeAleatorio() + '</strong><br>acaba de asegurar su acceso</div></div>';
+      container.appendChild(notif);
+      setTimeout(function() { notif.style.transform="translateX(0)"; notif.style.opacity="1"; }, 100);
+      setTimeout(function() {
+        notif.style.transform="translateX(120%)"; notif.style.opacity="0";
+        setTimeout(function() { notif.remove(); }, 400);
+      }, 5000);
+    }
 
-          atualizarContagem();
-          intervalo = setInterval(atualizarContagem, 1000);
-
-          timerIniciado = true;
-        }
-
-        // 👇 FICA OBSERVANDO APENAS UMA VEZ
-        document.addEventListener("DOMContentLoaded", () => {
-
-          const checkLiberacao = setInterval(() => {
-            const elementos = document.querySelectorAll(".esconder");
-
-            let liberado = false;
-
-            elementos.forEach(el => {
-              if (window.getComputedStyle(el).display !== "none") {
-                liberado = true;
-              }
-            });
-
-            if (liberado) {
-              iniciarTimer();
-              clearInterval(checkLiberacao);
-            }
-
-          }, 500); // leve e suficiente
-        });
-      </script>
-
-      <script>
-        // ⚠️ ATENÇÃO — BLOQUEIO DO BOTÃO "VOLTAR" DO NAVEGADOR.
-        // Isto NÃO é um pixel de rastreio (não envia dados a lugar
-        // nenhum), mas é um script de manipulação de navegação:
-        // ele intercepta o botão "Voltar" do visitante e, em vez de
-        // deixá-lo sair da página, força um redirecionamento para
-        // OUTRO domínio (https://viniciusarmondesonline.com/back-redirect.html),
-        // provavelmente uma página de "oferta de última chance" ou
-        // reter o visitante. Deixei ativo porque você pediu para
-        // sinalizar e não remover automaticamente — mas como aponta
-        // para um domínio de terceiros que eu não baixei/controlo,
-        // recomendo decidir se quer manter, trocar o destino, ou
-        // remover esse comportamento.
-        history.pushState(null, null, location.href);
-        window.addEventListener('popstate', function() {
-          history.pushState(null, null, location.href);
-          window.location.replace('https://viniciusarmondesonline.com/back-redirect.html');
-        });
-      </script>
+    setTimeout(function() {
+      criarNotificacao();
+      setInterval(criarNotificacao, Math.random()*5000+6000);
+    }, 8000);
+  </script>
 
 </body>
-
 </html>
