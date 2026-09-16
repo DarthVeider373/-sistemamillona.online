@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lección 01 · Área de Miembros</title>
+
+  <!--
+    RASTREIO REMOVIDO: script ofuscado (base64+XOR) que carregava
+    https://cdn.utmify.com.br/scripts/utms/latest.js (captura de UTM/
+    campanha da UTMify). Mesmo script encontrado na página principal.
+  -->
+
+  <style>
+    @keyframes pulsar {
+      0% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.04);
+      }
+
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    * {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0b0e14;
+    }
+
+    .hide {
+      display: none;
+    }
+
+    /* ===== TOPBAR ===== */
+    .topbar {
+      width: 100%;
+      background: #11151d;
+      border-bottom: 1px solid #1f242e;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #fff;
+      font-weight: 900;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+    }
+
+    .logo .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #22D3EE;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #22D3EE 0%, #6366F1 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    /* ===== WRAPPER ===== */
+    .wrapper {
+      width: 100%;
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 18px 16px 60px 16px;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      color: #6b7280;
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .breadcrumb .current {
+      color: #22D3EE;
+    }
+
+    .breadcrumb .sep {
+      color: #3a4150;
+    }
+
+    /* Lesson header */
+    .module-tag {
+      display: inline-block;
+      background: rgba(34, 211, 238, 0.12);
+      color: #22D3EE;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 50px;
+      margin-bottom: 14px;
+    }
+
+    .lesson-title {
+      color: #fff;
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1.35;
+      margin-bottom: 10px;
+    }
+
+    .lesson-desc {
+      color: #9aa3b2;
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 640px;
+      margin-bottom: 10px;
+    }
+
+    .lesson-hint {
+      color: #5b6472;
+      font-size: 13px;
+      margin-bottom: 24px;
+    }
+
+    /* Video */
+    .video-card {
+      width: 100%;
+      background: #11151d;
+      border: 1px solid #1f242e;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 22px;
+    }
+
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      aspect-ratio: 9 / 16;
+      background: #000;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 0 auto;
+    }
+
+    .video-wrapper vturb-smartplayer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .video-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 12px;
+      color: #6b7280;
+      font-size: 13px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .video-info .live {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #ff5c5c;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    .video-info .live .blip {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ff5c5c;
+      animation: pulsar 1.4s infinite ease-in-out;
+    }
+
+    /* Comentarios */
+    .comments-card {
+      background: #11151d;
+      border: 1px solid #1f242e;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 22px;
+    }
+
+    .comments-card h2 {
+      color: #fff;
+      font-size: 15px;
+      font-weight: bold;
+      margin-bottom: 14px;
+    }
+
+    .comment {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-top: 1px solid #1f242e;
+    }
+
+    .comment:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .comment .avatar {
+      width: 34px;
+      height: 34px;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    .comment .body {
+      flex: 1;
+    }
+
+    .comment .name {
+      color: #fff;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .comment .name span {
+      color: #5b6472;
+      font-weight: normal;
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .comment .text {
+      color: #9aa3b2;
+      font-size: 14px;
+      line-height: 1.5;
+      margin-top: 4px;
+    }
+
+    /* CTA revealed after delay */
+    .unlock-card {
+      background: linear-gradient(150deg, #1b2a3a 0%, #11151d 100%);
+      border: 1px solid #22D3EE;
+      border-radius: 12px;
+      padding: 22px;
+      text-align: center;
+    }
+
+    .unlock-card .tag {
+      display: inline-block;
+      background: rgba(34, 211, 238, 0.15);
+      color: #22D3EE;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 50px;
+      margin-bottom: 14px;
+    }
+
+    .unlock-card h3 {
+      color: #fff;
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .unlock-card p {
+      color: #9aa3b2;
+      font-size: 14px;
+      line-height: 1.6;
+      max-width: 480px;
+      margin: 0 auto 20px auto;
+    }
+
+    .button {
+      width: 100%;
+      max-width: 380px;
+      height: 58px;
+      border-radius: 8px;
+      background-color: transparent;
+      background-image: linear-gradient(150deg, #22D3EE 0%, #6366F1 100%);
+      font-weight: bold;
+      font-size: 18px;
+      color: #0b0e14;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: pulsar 2s infinite ease-in-out;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 600px) {
+      .lesson-title {
+        font-size: 20px;
+      }
+
+      .lesson-desc {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="topbar">
+    <div class="logo"><span class="dot"></span> ÁREA DE MIEMBROS</div>
+    <div class="avatar">👤</div>
+  </div>
+
+  <div class="wrapper">
+
+    <div class="breadcrumb">
+      <span>Inicio</span>
+      <span class="sep">/</span>
+      <span>Módulo 1: Primeros Pasos</span>
+      <span class="sep">/</span>
+      <span class="current">Lección 01</span>
+    </div>
+
+    <span class="module-tag">Módulo 1 · Lección 01</span>
+    <h1 class="lesson-title">LOS 3 ERRORES FATALES QUE SEPARAN A QUIENES GANAN $10K EN EL PRIMER MES DE LOS QUE SE RINDEN A MITAD DE CAMINO</h1>
+    <p class="lesson-hint">Recomendado: mirá esta lección antes de continuar al siguiente paso.</p>
+
+    <div class="video-card">
+      <div class="video-wrapper">
+        <vturb-smartplayer id="vid-6a31c02cf0fe6c80dc0c98a5" style="display: block; margin: 0 auto; width: 100%; max-width: 400px;"></vturb-smartplayer>
+        <script type="text/javascript">
+          // PLAYER DE VÍDEO (VSL) — NÃO É RASTREIO, É CONTEÚDO.
+          // Carrega o player do Converte.ai/vturb que reproduz esta
+          // "aula" (na prática, é o vídeo de vendas do upsell3).
+          var s=document.createElement("script"); s.src="https://scripts.converteai.net/be9b2814-5467-466f-adc0-469d0d4dee4c/players/6a31c02cf0fe6c80dc0c98a5/v4/player.js", s.async=!0,document.head.appendChild(s);
+        </script>
+      </div>
+      <div class="video-info">
+        <span class="live"><span class="blip"></span> En reproducción</span>
+        <span>Mirá ahora y no cierres esta página · Duración: 4 minutos</span>
+      </div>
+    </div>
+
+    <div class="hide">
+      <!--
+        WIDGET DE CHECKOUT DA HOTMART — NÃO É RASTREIO, É O BOTÃO DE
+        COMPRA. Lê os parâmetros da URL (fsid) para montar o botão de
+        compra deste upsell3, vinculado à sua sessão de funil.
+      -->
+      <!-- HOTMART - Sales Funnel Widget -->
+      <!--- sales funnel container --->
+      <div id="hotmart-sales-funnel"></div>
+
+      <!--- script load and setup --->
+      <script src="https://checkout.hotmart.com/lib/hotmart-checkout-elements.js"></script>
+      <script>
+        checkoutElements.init('salesFunnel').mount('#hotmart-sales-funnel')
+      </script>
+      <!-- HOTMART - Sales Funnel Widget -->
+    </div>
+
+    <!--
+      ⚠️ ATENÇÃO — COMENTÁRIOS FALSOS / FIXOS.
+      Estes 3 "comentários de alunos" abaixo (Dorian Pacheco, Yolanda
+      Riffo, Maximiliano Orozco) são texto fixo no HTML, sempre os
+      mesmos para todo mundo que abre a página — não são comentários
+      reais de alunos. É outro elemento de prova social fabricada,
+      como as notificações falsas da página principal. Avalie se quer
+      manter, trocar por depoimentos reais, ou remover.
+    -->
+    <div class="comments-card">
+      <h2>💬 Comentarios de la lección</h2>
+
+      <div class="comment">
+        <div class="avatar">💬</div>
+        <div class="body">
+          <div class="name">Dorian Pacheco <span>hace 2 horas</span></div>
+          <div class="text">Esta clase está buenísima, lo explica todo de una manera que se entiende fácil. ¡Ya quiero
+            ver la siguiente!</div>
+        </div>
+      </div>
+
+      <div class="comment">
+        <div class="avatar">💬</div>
+        <div class="body">
+          <div class="name">Yolanda Riffo <span>hace 5 horas</span></div>
+          <div class="text">El paso 2 y el paso 3 son perfectos, justo lo que me estaba faltando para entender cómo
+            armar todo esto.</div>
+        </div>
+      </div>
+
+      <div class="comment">
+        <div class="avatar">💬</div>
+        <div class="body">
+          <div class="name">Maximiliano Orozco <span>hace 1 día</span></div>
+          <div class="text">Genial esta lección, la vi dos veces para no perderme ningún detalle. Vamos por la siguiente
+            🙌</div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+
+  <!--
+    ⚠️ ATENÇÃO — SCRIPT MORTO / SOBRANDO.
+    Este bloco carrega o player de ID "6a26e9833ebb1a17b4725c8d", mas
+    NÃO existe nenhum elemento <vturb-smartplayer> com esse ID nesta
+    página (só existe o "6a31c02cf0fe6c80dc0c98a5" lá em cima). Ou
+    seja: baixa um script à toa, sem nenhum efeito visível — parece
+    sobra de copiar/colar de outra página. Dá pra remover sem medo.
+  -->
+  <script
+    type="text/javascript"> var s = document.createElement("script"); s.src = "https://scripts.converteai.net/be9b2814-5467-466f-adc0-469d0d4dee4c/players/6a26e9833ebb1a17b4725c8d/v4/player.js", s.async = !0, document.head.appendChild(s); </script>
+
+  <script>
+    // CONTROLE DE EXIBIÇÃO ATRELADO AO VÍDEO — NÃO É RASTREIO.
+    // Libera o botão de compra (classe ".hide") depois de 465
+    // segundos (~7,75min) assistidos do vídeo.
+    var delaySeconds = 465;
+    var player = document.querySelector("vturb-smartplayer");
+    player.addEventListener("player:ready", function () {
+      player.displayHiddenElements(delaySeconds, [".hide"], {
+        persist: true
+      });
+    });
+  </script>
+
+</body>
+
+</html>
