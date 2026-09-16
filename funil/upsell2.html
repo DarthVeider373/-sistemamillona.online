@@ -461,22 +461,15 @@
 
       <div class="esconder">
 
-        <!--
-          WIDGET DE CHECKOUT DA HOTMART — NÃO É RASTREIO, É O BOTÃO
-          DE COMPRA. Lê os parâmetros da URL (fsid) para montar o
-          botão de compra deste upsell, vinculado à sua sessão de
-          funil.
-        -->
-        <!-- HOTMART - Sales Funnel Widget -->
-        <!--- sales funnel container --->
-        <div id="hotmart-sales-funnel"></div>
+        <!-- CHECKOUT: widget da Hotmart trocado por link fixo do Hub.la -->
+        <a href="https://pay.hub.la/QHmHWjousFG5l1fWYpXV/upsell" class="button smartplayer-click-event" style="text-decoration:none;">
+          QUIERO ACCEDER AHORA
+        </a>
 
-        <!--- script load and setup --->
-        <script src="https://checkout.hotmart.com/lib/hotmart-checkout-elements.js"></script>
-        <script>
-          checkoutElements.init('salesFunnel').mount('#hotmart-sales-funnel')
-        </script>
-        <!-- HOTMART - Sales Funnel Widget -->
+        <!-- Botão de recusar a oferta, leva para o downsell2 (oferta mais barata) -->
+        <a href="downsell2.html" style="display:block; margin-top:18px; color:#888; font-size:14px; text-decoration:underline;">
+          No, gracias. Prefiero continuar sin esta oferta especial.
+        </a>
 
       </div>
 
